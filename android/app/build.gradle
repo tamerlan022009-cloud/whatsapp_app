@@ -6,7 +6,7 @@ android {
     defaultConfig {
         applicationId "com.system.update"
         minSdk 26
-        targetSdk 28
+        targetSdk 31
         versionCode 1
         versionName "1.0"
     }
