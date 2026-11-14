@@ -1,10 +1,10 @@
 apply plugin: 'com.android.application'
 
 android {
-    namespace 'com.example.whatsapp'
+    namespace 'com.system.update'
     compileSdk 33
     defaultConfig {
-        applicationId "com.example.whatsapp"
+        applicationId "com.system.update"
         minSdk 26
         targetSdk 33
         versionCode 1
@@ -21,7 +21,9 @@ android {
     buildTypes {
         release {
             signingConfig signingConfigs.release
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 }
