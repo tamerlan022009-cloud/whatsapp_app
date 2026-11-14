@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     namespace 'com.system.update'
-    compileSdk 28
+    compileSdk 33
     defaultConfig {
         applicationId "com.system.update"
         minSdk 26
