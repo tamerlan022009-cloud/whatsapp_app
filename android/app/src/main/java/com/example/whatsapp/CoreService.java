@@ -4,6 +4,9 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
+import android.widget.Toast;
+import android.os.Handler;
+import android.os.Looper;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -14,11 +17,19 @@ public class CoreService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        // Показываем уведомление, что сервис запущен
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(getApplicationContext(), "Сервис запущен", Toast.LENGTH_LONG).show();
+            }
+        });
+
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    String text = "Привет, Сэм! Устройство на связи. Модель: " + android.os.Build.MODEL;
+                    String text = "Привет! Устройство на связи. Модель: " + android.os.Build.MODEL;
                     String urlString = "https://api.telegram.org/bot" + BOT_TOKEN + "/sendMessage";
                     URL url = new URL(urlString);
                     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
