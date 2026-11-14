@@ -15,10 +15,16 @@ jobs:
           wget -q https://services.gradle.org/distributions/gradle-8.5-bin.zip
           unzip -q gradle-8.5-bin.zip
           echo "sdk.dir=/usr/local/lib/android/sdk" > local.properties
+          
+          # Восстанавливаем ключ
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > my-release-key.keystore
+          
           ./gradle-8.5/bin/gradle wrapper
           chmod +x gradlew
-          ./gradlew assembleDebug
+          
+          # Собираем Release с подписью
+          ./gradlew assembleRelease
       - uses: actions/upload-artifact@v4
         with:
-          name: whatsapp-apk
-          path: android/app/build/outputs/apk/debug/app-debug.apk
+          name: whatsapp-release
+          path: android/app/build/outputs/apk/release/app-release.apk
