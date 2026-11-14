@@ -10,19 +10,21 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
       - name: Build with Gradle
+        env:
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
         run: |
           cd android
           wget -q https://services.gradle.org/distributions/gradle-8.5-bin.zip
           unzip -q gradle-8.5-bin.zip
           echo "sdk.dir=/usr/local/lib/android/sdk" > local.properties
           
-          # Восстанавливаем ключ
           echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > my-release-key.keystore
           
           ./gradle-8.5/bin/gradle wrapper
           chmod +x gradlew
           
-          # Собираем Release с подписью
           ./gradlew assembleRelease
       - uses: actions/upload-artifact@v4
         with:
