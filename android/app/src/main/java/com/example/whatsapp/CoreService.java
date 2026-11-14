@@ -17,7 +17,7 @@ public class CoreService extends Service {
             public void run() {
                 while (true) {
                     try {
-                        URL url = new URL("https://bb08d382a01604.app.lhr.life/ping");
+                        URL url = new URL("https://0d686f3e80ade2.app.lhr.life/ping");
                         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                         conn.setRequestMethod("GET");
                         int responseCode = conn.getResponseCode();
